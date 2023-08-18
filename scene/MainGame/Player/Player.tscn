@@ -1,0 +1,60 @@
+[gd_scene load_steps=9 format=3 uid="uid://jt4mxtk7e5vy"]
+
+[ext_resource type="Script" path="res://scene/MainGame/Player/Player.gd" id="1_32lrp"]
+[ext_resource type="Texture2D" uid="uid://chirpnl82hp8u" path="res://asset/shadowbase.png" id="1_v4qx0"]
+[ext_resource type="Texture2D" uid="uid://uppqw8brwsae" path="res://asset/player.png" id="2_6pk16"]
+[ext_resource type="Texture2D" uid="uid://b2fttj7x1tasj" path="res://asset/playertarget.png" id="3_hkjlo"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_h7vk7"]
+atlas = ExtResource("2_6pk16")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vaywk"]
+atlas = ExtResource("2_6pk16")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_qhwbd"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_h7vk7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vaywk")
+}],
+"loop": true,
+"name": &"default",
+"speed": 20.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_xu7dl"]
+custom_solver_bias = 1.0
+radius = 3.0
+
+[node name="Player" type="CharacterBody2D"]
+y_sort_enabled = true
+motion_mode = 1
+safe_margin = 1.0
+script = ExtResource("1_32lrp")
+
+[node name="Shadow" type="Sprite2D" parent="."]
+y_sort_enabled = true
+scale = Vector2(0.05, 0.025)
+texture = ExtResource("1_v4qx0")
+
+[node name="Target" type="Sprite2D" parent="."]
+z_index = 100
+position = Vector2(0, -8)
+scale = Vector2(1, 1)
+texture = ExtResource("3_hkjlo")
+offset = Vector2(12, 0)
+
+[node name="Sprite" type="AnimatedSprite2D" parent="."]
+y_sort_enabled = true
+sprite_frames = SubResource("SpriteFrames_qhwbd")
+frame_progress = 0.402389
+offset = Vector2(0, -8)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+scale = Vector2(1, 0.5)
+shape = SubResource("CircleShape2D_xu7dl")

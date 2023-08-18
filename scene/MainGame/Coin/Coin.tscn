@@ -1,0 +1,26 @@
+[gd_scene load_steps=5 format=3 uid="uid://bnm51v5xcds7e"]
+
+[ext_resource type="Script" path="res://scene/MainGame/Coin/Coin.gd" id="1_ad658"]
+[ext_resource type="Texture2D" uid="uid://chirpnl82hp8u" path="res://asset/shadowbase.png" id="1_svqtl"]
+[ext_resource type="Texture2D" uid="uid://dahfkm57oucjx" path="res://asset/coin.png" id="3_s303g"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_yp1hd"]
+radius = 5.0
+
+[node name="Coin" type="Area2D"]
+y_sort_enabled = true
+script = ExtResource("1_ad658")
+
+[node name="Shadow" type="Sprite2D" parent="."]
+y_sort_enabled = true
+scale = Vector2(0.075, 0.038)
+texture = ExtResource("1_svqtl")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+scale = Vector2(1, 0.5)
+shape = SubResource("CircleShape2D_yp1hd")
+
+[node name="Sprite" type="Sprite2D" parent="."]
+y_sort_enabled = true
+texture = ExtResource("3_s303g")
+offset = Vector2(0, -6)

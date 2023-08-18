@@ -1,0 +1,38 @@
+[gd_scene load_steps=6 format=3 uid="uid://dibecnsaymr5l"]
+
+[ext_resource type="Texture2D" uid="uid://gkrw151w78ni" path="res://asset/particle/shine.png" id="1_85f8o"]
+[ext_resource type="Script" path="res://scene/MainGame/Coin/CoinSparkle.gd" id="2_pjilj"]
+
+[sub_resource type="Curve" id="Curve_573l0"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.168675, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_h1aya"]
+curve = SubResource("Curve_573l0")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_bau61"]
+emission_shape = 1
+emission_sphere_radius = 12.0
+particle_flag_disable_z = true
+gravity = Vector3(0, 0, 0)
+angular_velocity_min = -60.63
+angular_velocity_max = 45.47
+orbit_velocity_min = 0.0
+orbit_velocity_max = 0.0
+angle_min = -45.5
+angle_max = 75.8
+scale_min = 0.5
+scale_curve = SubResource("CurveTexture_h1aya")
+color = Color(1, 0.917647, 0.737255, 1)
+
+[node name="CoinSparkle" type="GPUParticles2D"]
+z_index = 1
+y_sort_enabled = true
+emitting = false
+amount = 1
+process_material = SubResource("ParticleProcessMaterial_bau61")
+texture = ExtResource("1_85f8o")
+lifetime = 0.75
+one_shot = true
+explosiveness = 1.0
+script = ExtResource("2_pjilj")
