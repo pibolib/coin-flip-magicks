@@ -1,0 +1,180 @@
+[gd_scene load_steps=11 format=3 uid="uid://cudifahfy4asj"]
+
+[ext_resource type="Texture2D" uid="uid://chirpnl82hp8u" path="res://asset/shadowbase.png" id="1_bxa26"]
+[ext_resource type="Script" path="res://scene/MainGame/Enemy/PumpkinTotem/PumpkinTotem.gd" id="1_fikbg"]
+[ext_resource type="Shader" path="res://scene/Resources/EnemyDeath.gdshader" id="1_ko1hn"]
+[ext_resource type="Texture2D" uid="uid://dbbo68g7s4rbm" path="res://asset/enemy1.png" id="2_l3jgj"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_th4tt"]
+custom_solver_bias = 1.0
+radius = 6.0
+
+[sub_resource type="Animation" id="Animation_hpghm"]
+resource_name = "Attack"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:is_attacking")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 1),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [true, false, true, false, true, false, true, false, false]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.2, 0.4, 0.6, 1),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"values": [{
+"args": [-0.25],
+"method": &"fire_projectile"
+}, {
+"args": [0.0],
+"method": &"fire_projectile"
+}, {
+"args": [0.25],
+"method": &"fire_projectile"
+}, {
+"args": [1],
+"method": &"change_state"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_rldkr"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:is_attacking")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Draw:material:shader_parameter/percentage")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [1.0]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Draw:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_eyw8v"]
+resource_name = "Die"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Draw:material:shader_parameter/percentage")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.5, 2),
+"transitions": PackedFloat32Array(1, 3.86375),
+"update": 0,
+"values": [1.0, 0.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Draw:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1, 1.5),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 0, 0, 0.584314), Color(1, 0, 0, 0)]
+}
+tracks/2/type = "method"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(2),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"queue_free"
+}]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ksvbm"]
+_data = {
+"Attack": SubResource("Animation_hpghm"),
+"Die": SubResource("Animation_eyw8v"),
+"RESET": SubResource("Animation_rldkr")
+}
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_80xok"]
+shader = ExtResource("1_ko1hn")
+shader_parameter/percentage = 1.0
+shader_parameter/hidden_alpha = 0.0
+shader_parameter/flip = false
+shader_parameter/horizontal = false
+shader_parameter/frames = 1
+
+[node name="PumpkinTotem" type="Area2D"]
+y_sort_enabled = true
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("1_fikbg")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+use_parent_material = true
+scale = Vector2(1, 0.5)
+shape = SubResource("CircleShape2D_th4tt")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_ksvbm")
+}
+
+[node name="Draw" type="CanvasGroup" parent="."]
+material = SubResource("ShaderMaterial_80xok")
+
+[node name="Shadow" type="Sprite2D" parent="Draw"]
+scale = Vector2(0.1, 0.05)
+texture = ExtResource("1_bxa26")
+
+[node name="Body" type="Sprite2D" parent="Draw"]
+position = Vector2(0, -5)
+texture = ExtResource("2_l3jgj")
+region_enabled = true
+region_rect = Rect2(1, 4, 14, 16)
+
+[node name="Head" type="Sprite2D" parent="Draw/Body"]
+unique_name_in_owner = true
+position = Vector2(0, -8)
+texture = ExtResource("2_l3jgj")
+region_enabled = true
+region_rect = Rect2(17, 12, 14, 10)

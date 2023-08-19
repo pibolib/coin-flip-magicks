@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://jt4mxtk7e5vy"]
+[gd_scene load_steps=10 format=3 uid="uid://jt4mxtk7e5vy"]
 
 [ext_resource type="Script" path="res://scene/MainGame/Player/Player.gd" id="1_32lrp"]
 [ext_resource type="Texture2D" uid="uid://chirpnl82hp8u" path="res://asset/shadowbase.png" id="1_v4qx0"]
@@ -31,8 +31,12 @@ animations = [{
 custom_solver_bias = 1.0
 radius = 3.0
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_3gvn2"]
+radius = 16.0
+
 [node name="Player" type="CharacterBody2D"]
 y_sort_enabled = true
+collision_layer = 5
 motion_mode = 1
 safe_margin = 1.0
 script = ExtResource("1_32lrp")
@@ -45,7 +49,6 @@ texture = ExtResource("1_v4qx0")
 [node name="Target" type="Sprite2D" parent="."]
 z_index = 100
 position = Vector2(0, -8)
-scale = Vector2(1, 1)
 texture = ExtResource("3_hkjlo")
 offset = Vector2(12, 0)
 
@@ -58,3 +61,18 @@ offset = Vector2(0, -8)
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 scale = Vector2(1, 0.5)
 shape = SubResource("CircleShape2D_xu7dl")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+limit_left = 0
+limit_top = 0
+limit_bottom = 160
+position_smoothing_speed = 10.0
+
+[node name="PickupRadius" type="Area2D" parent="."]
+collision_layer = 32768
+collision_mask = 32768
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PickupRadius"]
+shape = SubResource("CircleShape2D_3gvn2")
+
+[connection signal="area_entered" from="PickupRadius" to="." method="_on_pickup_radius_area_entered"]

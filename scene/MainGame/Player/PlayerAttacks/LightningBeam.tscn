@@ -1,0 +1,131 @@
+[gd_scene load_steps=8 format=3 uid="uid://dg5b7a75dke73"]
+
+[ext_resource type="Script" path="res://scene/MainGame/Player/PlayerAttacks/LightningBeam.gd" id="1_mtdy3"]
+[ext_resource type="Texture2D" uid="uid://jssurgkopgiq" path="res://asset/beambody.png" id="1_w844c"]
+[ext_resource type="Texture2D" uid="uid://gpgvbmluboov" path="res://asset/abilityworld.png" id="2_7b1s6"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_bnc4h"]
+size = Vector2(1, 8)
+
+[sub_resource type="Animation" id="Animation_air2a"]
+resource_name = "life"
+length = 1.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Marker2D/Line2D:width")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 1.3, 1.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [1.0, 8.0, 8.0, 0.0]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(1.5),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"queue_free"
+}]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Ball:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.1, 1.3, 1.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(1, 1), Vector2(1, 1), Vector2(0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_cwahi"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Marker2D/Line2D:width")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [8.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Ball:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_yfuxw"]
+_data = {
+"RESET": SubResource("Animation_cwahi"),
+"life": SubResource("Animation_air2a")
+}
+
+[node name="LightningBeam" type="Node2D"]
+z_index = 1
+y_sort_enabled = true
+script = ExtResource("1_mtdy3")
+
+[node name="Marker2D" type="Marker2D" parent="."]
+y_sort_enabled = true
+position = Vector2(0, -11)
+
+[node name="Line2D" type="Line2D" parent="Marker2D"]
+y_sort_enabled = true
+position = Vector2(1.39876e-06, 8)
+points = PackedVector2Array(0, -8, 0.999999, -8)
+width = 8.0
+texture = ExtResource("1_w844c")
+texture_mode = 2
+
+[node name="Collision" type="Area2D" parent="Marker2D"]
+y_sort_enabled = true
+collision_layer = 0
+collision_mask = 130
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Marker2D/Collision"]
+y_sort_enabled = true
+position = Vector2(0.5, 4.76837e-07)
+shape = SubResource("RectangleShape2D_bnc4h")
+
+[node name="BallPos" type="Marker2D" parent="Marker2D"]
+unique_name_in_owner = true
+z_index = 1
+y_sort_enabled = true
+position = Vector2(1, 0)
+
+[node name="Ball" type="Sprite2D" parent="."]
+z_index = 2
+y_sort_enabled = true
+position = Vector2(1, -11)
+texture = ExtResource("2_7b1s6")
+region_enabled = true
+region_rect = Rect2(6, 46, 12, 12)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_yfuxw")
+}
+
+[connection signal="body_entered" from="Marker2D/Collision" to="." method="_on_collision_body_entered"]

@@ -1,0 +1,30 @@
+[gd_scene load_steps=5 format=3 uid="uid://bu4w18pvk3t28"]
+
+[ext_resource type="Script" path="res://scene/MainGame/Player/PlayerAttacks/MoteExplosion.gd" id="1_3kk6q"]
+
+[sub_resource type="Gradient" id="Gradient_imfga"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_360px"]
+gradient = SubResource("Gradient_imfga")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_s1bn2"]
+particle_flag_disable_z = true
+spread = 180.0
+gravity = Vector3(0, 0, 0)
+initial_velocity_min = 73.68
+initial_velocity_max = 73.68
+orbit_velocity_min = 0.0
+orbit_velocity_max = 0.0
+scale_max = 2.0
+color_ramp = SubResource("GradientTexture1D_360px")
+
+[node name="MoteExplosion" type="GPUParticles2D"]
+y_sort_enabled = true
+emitting = false
+amount = 32
+process_material = SubResource("ParticleProcessMaterial_s1bn2")
+one_shot = true
+explosiveness = 0.88
+randomness = 0.18
+script = ExtResource("1_3kk6q")

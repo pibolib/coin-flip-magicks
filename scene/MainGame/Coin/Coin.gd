@@ -22,11 +22,15 @@ func _process(delta):
 			g = 0
 		else:
 			zsp = -zsp*0.5
-			var sparkle = SPARKLE.instantiate()
-			sparkle.position = position
-			add_sibling(sparkle)
+			sparkle()
 		z = 0
 
-func _physics_process(delta):
+func _physics_process(_delta):
 	$Sprite.position.y = z
 	$Sprite.scale.x = lerp($Sprite.scale.x, sin(Global.time*2 + time_offset), 0.4)
+
+func sparkle(amount: int = 1):
+	for i in amount:
+		var new_sparkle = SPARKLE.instantiate()
+		new_sparkle.position = position
+		add_sibling(new_sparkle)

@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://dtyn2jka36eor"]
+
+[ext_resource type="Script" path="res://scene/MainGame/Player/PlayerAttacks/IceSpikeSpawner.gd" id="1_uuqj4"]
+
+[node name="IceSpikeSpawner" type="Node2D"]
+script = ExtResource("1_uuqj4")
