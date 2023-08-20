@@ -22,22 +22,33 @@ func _process(delta):
 
 func _on_area_entered(area):
 	if area is Enemy:
-		if buff:
-			area.take_damage(2)
-		else:
-			area.take_damage(1)
+		for a in $Actual.get_overlapping_areas():
+			if a is Enemy:
+				if buff:
+					a.take_damage(2)
+				else:
+					a.take_damage(1)
 	explode()
 	queue_free()
 
 func _on_body_entered(_body):
-	explode()
-	queue_free()
+	for a in $Actual.get_overlapping_areas():
+		if a is Enemy:
+			if buff:
+				a.take_damage(2)
+			else:
+				a.take_damage(1)
+	if Global.distance_to_player(position) > 12:
+		explode()
+		queue_free()
 
 func explode():
 	var new_explosion
 	if buff:
+		Global.camera_shake += 2
 		new_explosion = FIREBALL_EXPLOSION_BLUE.instantiate()
 	else:
+		Global.camera_shake += 1
 		new_explosion = FIREBALL_EXPLOSION.instantiate()
 	new_explosion.position = $Sprite.global_position
 	add_sibling(new_explosion)

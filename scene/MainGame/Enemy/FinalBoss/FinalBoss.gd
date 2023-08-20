@@ -1,10 +1,12 @@
 extends Enemy
-class_name PumpkinTotem
+class_name FinalBoss
 
 enum States {
 	IDLE,
-	TRACKING,
-	ATTACK,
+	WAIT,
+	ATTACK1,
+	ATTACK2,
+	SUMMON,
 	DIE
 }
 
@@ -26,10 +28,10 @@ func _ready():
 	change_state(States.IDLE)
 
 func _process(delta):
-	if state == States.TRACKING:
+	if state == States.WAIT:
 		state_timer += delta
 		if state_timer >= 2:
-			change_state(States.ATTACK)
+			change_state(States.ATTACK1)
 		angle = position.angle_to_point(Global.game_variables.player_position)
 	elif state == States.DIE:
 		shake = 2
@@ -50,7 +52,7 @@ func fire_projectile(angle_mod: float) -> void:
 func change_state(new_state: States) -> void:
 	state_timer = 0
 	state = new_state
-	if state == States.ATTACK:
+	if state == States.ATTACK1:
 		$AnimationPlayer.play("Attack")
 	elif state == States.DIE:
 		$AnimationPlayer.play("Die")
@@ -80,10 +82,10 @@ func take_damage(amount: int) -> void:
 func _on_activate_body_entered(body):
 	if body is Player:
 		if state == States.IDLE:
-			state = States.TRACKING
+			state = States.WAIT
 
 
 func _on_activate_body_exited(body):
 	if body is Player:
-		if state == States.TRACKING or state == States.ATTACK:
+		if state == States.WAIT or state == States.ATTACK1:
 			state = States.IDLE

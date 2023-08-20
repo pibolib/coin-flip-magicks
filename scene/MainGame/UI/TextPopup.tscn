@@ -1,0 +1,85 @@
+[gd_scene load_steps=6 format=3 uid="uid://djnvhyh2ds06x"]
+
+[ext_resource type="Theme" uid="uid://d1yyhlcnycp7a" path="res://scene/Resources/UITheme.tres" id="1_bgsit"]
+[ext_resource type="Script" path="res://scene/MainGame/UI/TextPopup.gd" id="1_kbh0u"]
+
+[sub_resource type="Animation" id="Animation_lmmyc"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Label:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-59, -11)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Label:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="Animation" id="Animation_5gkyw"]
+resource_name = "life"
+length = 1.5
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Label:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5, 0.75, 1.45),
+"transitions": PackedFloat32Array(0.25, 1, 1, 1),
+"update": 0,
+"values": [Vector2(-59, -11), Vector2(-59, -20), Vector2(-59, -20), Vector2(-59, -25)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Label:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.75, 0.8, 0.85, 0.9, 0.95, 1, 1.05, 1.1, 1.15, 1.2, 1.25, 1.3, 1.35, 1.4, 1.45),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_2qo4g"]
+_data = {
+"RESET": SubResource("Animation_lmmyc"),
+"life": SubResource("Animation_5gkyw")
+}
+
+[node name="TextPopup" type="Node2D"]
+z_index = 120
+script = ExtResource("1_kbh0u")
+
+[node name="Label" type="Label" parent="."]
+offset_left = -59.0
+offset_top = -11.0
+offset_right = 61.0
+theme = ExtResource("1_bgsit")
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+text = "test"
+horizontal_alignment = 1
+vertical_alignment = 2
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_2qo4g")
+}

@@ -4,10 +4,9 @@ const MOTE_EXPLOSION = preload("res://scene/MainGame/Player/PlayerAttacks/MoteEx
 
 var z: float = -8
 var velocity := Vector2.ZERO
-var speed: float = 120
+var speed: float = 200
 var angle: float = 0
 var buff: bool = false
-var source: Node = null
 
 func _ready():
 	$Sprite.rotation = angle
@@ -16,13 +15,23 @@ func _ready():
 func _process(delta):
 	$Sprite.position.y = z-4
 	position += velocity * delta
-	$Sprite.rotation += delta * 8
 
-func _on_body_entered(body):
-	if body is Player:
-		body.take_damage()
+func _on_area_entered(area):
+	if area is Enemy:
+		if buff:
+			for i in 3:
+				var coin = Global.instantiate_coin()
+				coin.position = position
+				call_deferred("add_sibling", coin)
+		area.take_damage(1)
+		Global.camera_shake += 1
 	explode()
 	queue_free()
+
+func _on_body_entered(_body):
+	if Global.distance_to_player(position) > 12:
+		explode()
+		queue_free()
 
 func explode():
 	var new_explosion = MOTE_EXPLOSION.instantiate()

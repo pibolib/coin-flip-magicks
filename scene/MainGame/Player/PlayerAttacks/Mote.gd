@@ -19,12 +19,14 @@ func _process(delta):
 func _on_area_entered(area):
 	if area is Enemy:
 		area.take_damage(1)
+		Global.camera_shake += 1
 	explode()
 	queue_free()
 
 func _on_body_entered(_body):
-	explode()
-	queue_free()
+	if Global.distance_to_player(position) > 12:
+		explode()
+		queue_free()
 
 func explode():
 	var new_explosion = MOTE_EXPLOSION.instantiate()

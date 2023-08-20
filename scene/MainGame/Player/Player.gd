@@ -5,10 +5,11 @@ const COIN_FLIP_ANIM = preload("res://scene/MainGame/Player/CoinFlipAnim.tscn")
 
 var z: float = -8
 var flip_sprite := false
-var movement_speed: float = 75
+var movement_speed: float = 100
 var movement_vector := Vector2.ZERO
 var aim_angle: float = 0
 var invulnerable = false
+var shake: float = 0
 
 func _ready():
 	$Sprite.play("default")
@@ -56,9 +57,16 @@ func _process(_delta):
 		velocity = Vector2.ZERO
 	move_and_slide()
 
-func _physics_process(_delta):
+func _physics_process(delta):
 	z = lerp(z, -8 + 2*sin(Global.time*8), 0.1)
 	$Target.rotation = lerp_angle($Target.rotation, aim_angle, 0.5)
+	if shake >= 0.5:
+		$Sprite.position.x = randf_range(-shake, shake)
+		shake -= delta * 8
+	if Global.camera_shake >= 0.5:
+		$Camera2D.position.x = randf_range(-Global.camera_shake, Global.camera_shake)
+	else:
+		$Camera2D.position.x = 0
 
 func fire():
 	var spell: int = Global.get_current_spell()
@@ -73,6 +81,9 @@ func fire():
 				make_coin_flip("Tails")
 			await Global.make_timer(0.5).timeout
 		var proj = Global.instantiate_spell(spell)
+		if spell == 4:
+			proj.damage = floor(Global.game_variables.coin / 4)
+			Global.game_variables.coin -= floor(Global.game_variables.coin / 4)
 		proj.angle = aim_angle
 		proj.buff = buff == 1
 		proj.position = position
@@ -80,6 +91,7 @@ func fire():
 
 func _on_pickup_radius_area_entered(area):
 	Global.game_variables.coin += 1
+	Global.game_variables.coins_obtained += 1
 	area.sparkle(3)
 	area.queue_free()
 
@@ -90,7 +102,12 @@ func make_coin_flip(side: String) -> void:
 
 func take_damage() -> void:
 	if !invulnerable:
+		Global.camera_shake += 4
+		shake = 2
 		invulnerable = true
+		var popup := Global.instantiate_text("1", Color.RED)
+		popup.position = Vector2(0, z)
+		add_child(popup)
 		Global.game_variables.hp -= 1
 		await Global.make_timer(2).timeout
 		invulnerable = false

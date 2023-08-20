@@ -1,9 +1,11 @@
-[gd_scene load_steps=19 format=3 uid="uid://bttb00eqlymmh"]
+[gd_scene load_steps=25 format=3 uid="uid://bttb00eqlymmh"]
 
 [ext_resource type="Theme" uid="uid://d1yyhlcnycp7a" path="res://scene/Resources/UITheme.tres" id="1_m4seq"]
 [ext_resource type="PackedScene" uid="uid://bml21vqmaldgj" path="res://scene/MainGame/UI/AbilityIcon.tscn" id="2_1mejx"]
 [ext_resource type="Texture2D" uid="uid://ih1yvdaxnj84" path="res://asset/abilities.png" id="2_ok5nh"]
 [ext_resource type="Script" path="res://scene/MainGame/UI/IngameUI.gd" id="2_t5c34"]
+[ext_resource type="FontFile" uid="uid://kk0mi0v8lyi" path="res://asset/fnt/04b_03.ttf" id="5_bmgc6"]
+[ext_resource type="Texture2D" uid="uid://pdl1d5dsfk24" path="res://asset/ui.png" id="5_li18r"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_u0j6x"]
 atlas = ExtResource("2_ok5nh")
@@ -28,20 +30,6 @@ load_path = "res://.godot/imported/abilities.png-c3af5f18842159392fc49e695ce5b41
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_gu65k"]
 atlas = SubResource("CompressedTexture2D_1k0ru")
-region = Rect2(0, 0, 16, 16)
-
-[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_vubfg"]
-load_path = "res://.godot/imported/abilities.png-c3af5f18842159392fc49e695ce5b411.ctex"
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_rbude"]
-atlas = SubResource("CompressedTexture2D_vubfg")
-region = Rect2(0, 0, 16, 16)
-
-[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_211c3"]
-load_path = "res://.godot/imported/abilities.png-c3af5f18842159392fc49e695ce5b411.ctex"
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_4l2iy"]
-atlas = SubResource("CompressedTexture2D_211c3")
 region = Rect2(0, 0, 16, 16)
 
 [sub_resource type="Animation" id="Animation_j86oo"]
@@ -81,7 +69,41 @@ _data = {
 "RESET": SubResource("Animation_it7vx")
 }
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_qvmvq"]
+atlas = ExtResource("5_li18r")
+region = Rect2(32, 8, 24, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nc87a"]
+atlas = ExtResource("5_li18r")
+region = Rect2(56, 8, 24, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mt4ej"]
+atlas = ExtResource("5_li18r")
+region = Rect2(80, 8, 24, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_c1sua"]
+atlas = ExtResource("5_li18r")
+region = Rect2(32, 40, 24, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ssawh"]
+atlas = ExtResource("5_li18r")
+region = Rect2(56, 40, 24, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rd60m"]
+atlas = ExtResource("5_li18r")
+region = Rect2(80, 40, 24, 32)
+
+[sub_resource type="FontVariation" id="FontVariation_ok1w2"]
+base_font = ExtResource("5_bmgc6")
+spacing_bottom = -3
+
+[sub_resource type="LabelSettings" id="LabelSettings_bthk6"]
+font_size = 8
+outline_size = 4
+outline_color = Color(0, 0, 0, 1)
+
 [node name="IngameUI" type="Control"]
+process_mode = 3
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -144,16 +166,6 @@ layout_mode = 2
 texture = SubResource("AtlasTexture_gu65k")
 index = 1
 
-[node name="IceSpikes" parent="AbilityContainer" instance=ExtResource("2_1mejx")]
-layout_mode = 2
-texture = SubResource("AtlasTexture_rbude")
-index = 2
-
-[node name="LightningBeam" parent="AbilityContainer" instance=ExtResource("2_1mejx")]
-layout_mode = 2
-texture = SubResource("AtlasTexture_4l2iy")
-index = 3
-
 [node name="Description" type="Label" parent="."]
 modulate = Color(1, 1, 1, 0)
 layout_mode = 2
@@ -167,3 +179,101 @@ text = "Fireball: 1-3 damage. 1 coin cost."
 libraries = {
 "": SubResource("AnimationLibrary_opnvi")
 }
+
+[node name="Shop" type="PanelContainer" parent="."]
+visible = false
+layout_direction = 2
+layout_mode = 1
+offset_left = 4.0
+offset_top = 36.0
+offset_right = 260.0
+offset_bottom = 172.0
+theme = ExtResource("1_m4seq")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Shop"]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="Label" type="Label" parent="Shop/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme = ExtResource("1_m4seq")
+text = "The Shop"
+
+[node name="CardContainer" type="HBoxContainer" parent="Shop/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 2
+
+[node name="MoteCard" type="TextureRect" parent="Shop/VBoxContainer/CardContainer"]
+modulate = Color(1, 1, 1, 0.498039)
+layout_mode = 2
+texture = SubResource("AtlasTexture_qvmvq")
+stretch_mode = 2
+
+[node name="FireballCard" type="TextureRect" parent="Shop/VBoxContainer/CardContainer"]
+modulate = Color(1, 1, 1, 0.498039)
+layout_mode = 2
+texture = SubResource("AtlasTexture_nc87a")
+stretch_mode = 2
+
+[node name="IceSpikesCard" type="TextureRect" parent="Shop/VBoxContainer/CardContainer"]
+layout_mode = 2
+texture = SubResource("AtlasTexture_mt4ej")
+stretch_mode = 2
+
+[node name="LightningBeamCard" type="TextureRect" parent="Shop/VBoxContainer/CardContainer"]
+layout_mode = 2
+texture = SubResource("AtlasTexture_c1sua")
+stretch_mode = 2
+
+[node name="CoinTossCard" type="TextureRect" parent="Shop/VBoxContainer/CardContainer"]
+layout_mode = 2
+texture = SubResource("AtlasTexture_ssawh")
+stretch_mode = 2
+
+[node name="Mote2Card" type="TextureRect" parent="Shop/VBoxContainer/CardContainer"]
+layout_mode = 2
+texture = SubResource("AtlasTexture_rd60m")
+stretch_mode = 2
+
+[node name="Description" type="Label" parent="Shop"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 8
+theme = ExtResource("1_m4seq")
+theme_override_fonts/font = SubResource("FontVariation_ok1w2")
+text = "Welcome to the Shop! Here you can buy various spells."
+
+[node name="Message" type="Label" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -148.0
+offset_top = -50.0
+offset_right = 140.0
+offset_bottom = -12.0
+grow_horizontal = 2
+grow_vertical = 0
+label_settings = SubResource("LabelSettings_bthk6")
+horizontal_alignment = 1
+vertical_alignment = 2
+autowrap_mode = 3
+
+[connection signal="gui_input" from="Shop/VBoxContainer/CardContainer/MoteCard" to="." method="_on_mote_card_gui_input"]
+[connection signal="mouse_entered" from="Shop/VBoxContainer/CardContainer/MoteCard" to="." method="_on_mote_card_mouse_entered"]
+[connection signal="gui_input" from="Shop/VBoxContainer/CardContainer/FireballCard" to="." method="_on_fireball_card_gui_input"]
+[connection signal="mouse_entered" from="Shop/VBoxContainer/CardContainer/FireballCard" to="." method="_on_fireball_card_mouse_entered"]
+[connection signal="gui_input" from="Shop/VBoxContainer/CardContainer/IceSpikesCard" to="." method="_on_ice_spikes_card_gui_input"]
+[connection signal="mouse_entered" from="Shop/VBoxContainer/CardContainer/IceSpikesCard" to="." method="_on_ice_spikes_card_mouse_entered"]
+[connection signal="gui_input" from="Shop/VBoxContainer/CardContainer/LightningBeamCard" to="." method="_on_lightning_beam_card_gui_input"]
+[connection signal="mouse_entered" from="Shop/VBoxContainer/CardContainer/LightningBeamCard" to="." method="_on_lightning_beam_card_mouse_entered"]
+[connection signal="gui_input" from="Shop/VBoxContainer/CardContainer/CoinTossCard" to="." method="_on_coin_toss_card_gui_input"]
+[connection signal="mouse_entered" from="Shop/VBoxContainer/CardContainer/CoinTossCard" to="." method="_on_coin_toss_card_mouse_entered"]
+[connection signal="gui_input" from="Shop/VBoxContainer/CardContainer/Mote2Card" to="." method="_on_mote_2_card_gui_input"]
+[connection signal="mouse_entered" from="Shop/VBoxContainer/CardContainer/Mote2Card" to="." method="_on_mote_2_card_mouse_entered"]

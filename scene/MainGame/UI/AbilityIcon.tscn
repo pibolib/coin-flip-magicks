@@ -8,6 +8,7 @@
 load_path = "res://.godot/imported/abilities.png-c3af5f18842159392fc49e695ce5b411.ctex"
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_t8l81"]
+resource_local_to_scene = true
 atlas = SubResource("CompressedTexture2D_joy3w")
 region = Rect2(0, 0, 16, 16)
 

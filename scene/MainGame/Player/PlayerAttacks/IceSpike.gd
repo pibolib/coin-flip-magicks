@@ -27,10 +27,12 @@ func _on_area_entered(area):
 	explode()
 
 func _on_body_entered(_body):
-	velocity = Vector2.ZERO
-	explode()
+	if Global.distance_to_player(position) > 12:
+		velocity = Vector2.ZERO
+		explode()
 
 func explode():
+	Global.camera_shake += 0.5
 	var tween := get_tree().create_tween()
 	tween.tween_property(self, "modulate", Color(1,1,1,0), 1.5)
 	tween.tween_callback(queue_free)

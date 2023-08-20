@@ -1,5 +1,5 @@
 extends Enemy
-class_name PumpkinTotem
+class_name PumpkinTotem2
 
 enum States {
 	IDLE,
@@ -8,21 +8,21 @@ enum States {
 	DIE
 }
 
-const PROJECTILE = preload("res://scene/MainGame/Enemy/Projectile/EnemyBasicProjectile.tscn")
+const PROJECTILE = preload("res://scene/MainGame/Enemy/Projectile/EnemyBasicProjectile2.tscn")
 
 var state := States.IDLE
 var angle: float = 0
 var rotations: Array[Vector2] = [
-	Vector2(17, 12), Vector2(33, 12), Vector2(33, 1), Vector2(17, 1)
+	Vector2(17, 52), Vector2(33, 52), Vector2(33, 41), Vector2(17, 41)
 ]
 var state_timer: float = 0
 var dead: bool = false
-var value: int = 5
+var value: int = 8
 var shake: float = 0
 @export var is_attacking: bool = false
 
 func _ready():
-	hp = 3
+	hp = 5
 	change_state(States.IDLE)
 
 func _process(delta):
@@ -51,7 +51,7 @@ func change_state(new_state: States) -> void:
 	state_timer = 0
 	state = new_state
 	if state == States.ATTACK:
-		$AnimationPlayer.play("Attack")
+		$AnimationPlayer.play("Attack2")
 	elif state == States.DIE:
 		$AnimationPlayer.play("Die")
 
@@ -76,6 +76,8 @@ func take_damage(amount: int) -> void:
 				coin.position = position
 				call_deferred("add_sibling", coin)
 		change_state(States.DIE)
+
+
 
 func _on_activate_body_entered(body):
 	if body is Player:

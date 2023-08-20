@@ -28,7 +28,7 @@ animations = [{
 }]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_xu7dl"]
-custom_solver_bias = 1.0
+custom_solver_bias = 0.009
 radius = 3.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_3gvn2"]
@@ -36,9 +36,10 @@ radius = 16.0
 
 [node name="Player" type="CharacterBody2D"]
 y_sort_enabled = true
-collision_layer = 5
+collision_layer = 2053
 motion_mode = 1
-safe_margin = 1.0
+wall_min_slide_angle = 3.14159
+safe_margin = 5.173
 script = ExtResource("1_32lrp")
 
 [node name="Shadow" type="Sprite2D" parent="."]
