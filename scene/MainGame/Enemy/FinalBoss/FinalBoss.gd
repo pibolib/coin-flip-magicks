@@ -36,6 +36,9 @@ func _ready():
 	$Draw/Main.play("Idle")
 
 func _process(delta):
+	if hp <= 0 and state != States.DIE:
+		take_damage(1)
+		change_state(States.DIE)
 	if state == States.WAIT:
 		state_timer += delta
 		if hp < hp_threshold:
@@ -135,4 +138,4 @@ func take_damage(amount: int) -> void:
 					var coin := Global.instantiate_coin()
 					coin.position = position
 					call_deferred("add_sibling", coin)
-				change_state(States.DIE)
+			change_state(States.DIE)
