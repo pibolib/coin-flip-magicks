@@ -1,9 +1,16 @@
-[gd_scene load_steps=10 format=3 uid="uid://jt4mxtk7e5vy"]
+[gd_scene load_steps=17 format=3 uid="uid://jt4mxtk7e5vy"]
 
 [ext_resource type="Script" path="res://scene/MainGame/Player/Player.gd" id="1_32lrp"]
 [ext_resource type="Texture2D" uid="uid://chirpnl82hp8u" path="res://asset/shadowbase.png" id="1_v4qx0"]
 [ext_resource type="Texture2D" uid="uid://uppqw8brwsae" path="res://asset/player.png" id="2_6pk16"]
 [ext_resource type="Texture2D" uid="uid://b2fttj7x1tasj" path="res://asset/playertarget.png" id="3_hkjlo"]
+[ext_resource type="AudioStream" uid="uid://bqkh6x6wy5svc" path="res://asset/sfx/castice.wav" id="5_r2s5h"]
+[ext_resource type="AudioStream" uid="uid://bhgwpnylej17i" path="res://asset/sfx/castgeneric.wav" id="6_dka4u"]
+[ext_resource type="AudioStream" uid="uid://dl37x0gh8pda3" path="res://asset/sfx/castgenericcoin.wav" id="7_6oos0"]
+[ext_resource type="AudioStream" uid="uid://dc7trxnv2j1aq" path="res://asset/sfx/castfire.wav" id="8_lf5em"]
+[ext_resource type="AudioStream" uid="uid://c764h4msrgy8w" path="res://asset/sfx/castbeam.wav" id="9_67yml"]
+[ext_resource type="AudioStream" uid="uid://bkafmrh8u370h" path="res://asset/sfx/playerhurt.wav" id="10_uo43x"]
+[ext_resource type="AudioStream" uid="uid://d3gvd36jrjv6q" path="res://asset/sfx/coinget.wav" id="11_02yv3"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_h7vk7"]
 atlas = ExtResource("2_6pk16")
@@ -32,7 +39,7 @@ custom_solver_bias = 0.009
 radius = 3.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_3gvn2"]
-radius = 16.0
+radius = 29.1548
 
 [node name="Player" type="CharacterBody2D"]
 y_sort_enabled = true
@@ -66,6 +73,7 @@ shape = SubResource("CircleShape2D_xu7dl")
 [node name="Camera2D" type="Camera2D" parent="."]
 limit_left = 0
 limit_top = 0
+limit_right = 3600
 limit_bottom = 160
 position_smoothing_speed = 10.0
 
@@ -75,5 +83,34 @@ collision_mask = 32768
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PickupRadius"]
 shape = SubResource("CircleShape2D_3gvn2")
+
+[node name="IceSpikes" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_r2s5h")
+bus = &"SFX"
+
+[node name="Generic" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("6_dka4u")
+bus = &"SFX"
+
+[node name="Mote2" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("7_6oos0")
+bus = &"SFX"
+
+[node name="Fireball" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("8_lf5em")
+bus = &"SFX"
+
+[node name="LightningBeam" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("9_67yml")
+bus = &"SFX"
+
+[node name="Damage" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("10_uo43x")
+bus = &"SFX"
+
+[node name="Coin" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("11_02yv3")
+volume_db = -10.792
+bus = &"SFX"
 
 [connection signal="area_entered" from="PickupRadius" to="." method="_on_pickup_radius_area_entered"]

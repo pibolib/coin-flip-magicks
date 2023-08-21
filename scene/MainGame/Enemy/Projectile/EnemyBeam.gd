@@ -12,6 +12,7 @@ func _ready():
 	$AnimationPlayer.play("life")
 	if buff:
 		$Marker2D/Line2D.modulate = Color(1,0.6,0.6,1)
+	$Beam.play()
 
 func _process(delta):
 	if active:

@@ -44,7 +44,6 @@ func fire_projectile(angle_mod: float) -> void:
 	var projectile = PROJECTILE.instantiate()
 	projectile.position = position
 	projectile.angle = angle + angle_mod
-	projectile.source = self
 	add_sibling(projectile)
 
 func change_state(new_state: States) -> void:
@@ -63,6 +62,8 @@ func take_damage(amount: int) -> void:
 			var coin := Global.instantiate_coin()
 			coin.position = position
 			call_deferred("add_sibling", coin)
+	else:
+		$Hurt.play()
 	var popup := Global.instantiate_text("%d" % amount)
 	add_child(popup)
 	modulate = Color.RED

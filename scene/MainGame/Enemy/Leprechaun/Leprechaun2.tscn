@@ -1,0 +1,251 @@
+[gd_scene load_steps=18 format=3 uid="uid://cithi1snbtfeb"]
+
+[ext_resource type="Script" path="res://scene/MainGame/Enemy/Leprechaun/Leprechaun2.gd" id="1_ofr85"]
+[ext_resource type="AudioStream" uid="uid://cy3hyjkcpf2v7" path="res://asset/sfx/enemydie.wav" id="2_c4p57"]
+[ext_resource type="Texture2D" uid="uid://chirpnl82hp8u" path="res://asset/shadowbase.png" id="2_r22b7"]
+[ext_resource type="Texture2D" uid="uid://b85uqpmoh1pjp" path="res://asset/enemy2.png" id="3_yx08b"]
+[ext_resource type="AudioStream" uid="uid://bqfwx67iwck4u" path="res://asset/sfx/enemyhurt.wav" id="4_gnrev"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_kjw4y"]
+custom_solver_bias = 1.0
+radius = 4.0
+
+[sub_resource type="Animation" id="Animation_hpghm"]
+resource_name = "Attack"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:is_attacking")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.7, 1),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [true, false, true, false, true, false, false, false]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.4, 1),
+"transitions": PackedFloat32Array(1, 1),
+"values": [{
+"args": [0.0],
+"method": &"fire_projectile"
+}, {
+"args": [1],
+"method": &"change_state"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_rnxvr"]
+resource_name = "AttackMell"
+length = 1.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = false
+tracks/0/path = NodePath(".:is_attacking")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.7, 1),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [true, false, true, false, true, false, false, false]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.5, 1.5),
+"transitions": PackedFloat32Array(1, 1),
+"values": [{
+"args": [],
+"method": &"attack"
+}, {
+"args": [1],
+"method": &"change_state"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_eyw8v"]
+resource_name = "Die"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Draw:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1, 1.5),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 0, 0, 0.584314), Color(1, 0, 0, 0)]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(2),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"queue_free"
+}]
+}
+tracks/2/type = "audio"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Hurt")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"clips": [{
+"end_offset": 0.0,
+"start_offset": 0.0,
+"stream": ExtResource("2_c4p57")
+}],
+"times": PackedFloat32Array(0)
+}
+tracks/2/use_blend = true
+
+[sub_resource type="Animation" id="Animation_rldkr"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:is_attacking")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Draw:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ksvbm"]
+_data = {
+"Attack": SubResource("Animation_hpghm"),
+"AttackMell": SubResource("Animation_rnxvr"),
+"Die": SubResource("Animation_eyw8v"),
+"RESET": SubResource("Animation_rldkr")
+}
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_s0kdf"]
+atlas = ExtResource("3_yx08b")
+region = Rect2(16, 16, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pqjmf"]
+atlas = ExtResource("3_yx08b")
+region = Rect2(0, 16, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_l6lwl"]
+atlas = ExtResource("3_yx08b")
+region = Rect2(16, 16, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7nkiu"]
+atlas = ExtResource("3_yx08b")
+region = Rect2(32, 16, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_lud4i"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_s0kdf")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pqjmf")
+}],
+"loop": true,
+"name": &"die",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_l6lwl")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7nkiu")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 10.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_wbntc"]
+radius = 128.035
+
+[node name="Leprechaun2" type="Area2D"]
+y_sort_enabled = true
+collision_layer = 2
+script = ExtResource("1_ofr85")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+use_parent_material = true
+scale = Vector2(1, 0.5)
+shape = SubResource("CircleShape2D_kjw4y")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_ksvbm")
+}
+
+[node name="Shadow" type="Sprite2D" parent="."]
+y_sort_enabled = true
+scale = Vector2(0.0625, 0.03125)
+texture = ExtResource("2_r22b7")
+
+[node name="Draw" type="CanvasGroup" parent="."]
+y_sort_enabled = true
+
+[node name="Body" type="AnimatedSprite2D" parent="Draw"]
+unique_name_in_owner = true
+y_sort_enabled = true
+position = Vector2(0, -8)
+sprite_frames = SubResource("SpriteFrames_lud4i")
+animation = &"walk"
+
+[node name="Activate" type="Area2D" parent="."]
+visible = false
+collision_layer = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Activate"]
+visible = false
+shape = SubResource("CircleShape2D_wbntc")
+
+[node name="Hurt" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_gnrev")
+bus = &"SFX"
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="body_entered" from="Activate" to="." method="_on_activate_body_entered"]
+[connection signal="body_exited" from="Activate" to="." method="_on_activate_body_exited"]

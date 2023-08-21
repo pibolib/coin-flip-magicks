@@ -27,9 +27,9 @@ func _ready():
 	change_state(States.IDLE)
 
 func _process(delta):
+	if velocity.x != 0:
+		$Draw.scale.x = sign(velocity.x)
 	if state == States.WALKING:
-		if velocity.x != 0:
-			$Draw.scale.x = sign(velocity.x)
 		state_timer += delta
 		if state_timer >= 2:
 			change_state(States.ATTACK)
@@ -42,6 +42,8 @@ func _process(delta):
 	else:
 		z = 0
 	position += velocity * delta
+	if position.y != clamp(position.y, 0, 200):
+		queue_free()
 
 func _physics_process(delta):
 	$Draw.position.y = z
@@ -88,6 +90,8 @@ func take_damage(amount: int) -> void:
 			var coin := Global.instantiate_coin()
 			coin.position = position
 			call_deferred("add_sibling", coin)
+	else:
+		$Hurt.play()
 	z = -1
 	zsp = -100
 	var popup := Global.instantiate_text("%d" % amount)
@@ -123,5 +127,3 @@ func _on_body_entered(body):
 		z = -1
 		zsp = -50
 		velocity = -velocity * 0.75
-		if velocity.x != 0:
-			$Draw.scale.x = sign(velocity.x)

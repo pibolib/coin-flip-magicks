@@ -1,8 +1,9 @@
-[gd_scene load_steps=8 format=3 uid="uid://lk2iikib6l14"]
+[gd_scene load_steps=9 format=3 uid="uid://lk2iikib6l14"]
 
 [ext_resource type="Script" path="res://scene/MainGame/Enemy/Projectile/EnemyBeam.gd" id="1_lejtk"]
 [ext_resource type="Texture2D" uid="uid://jssurgkopgiq" path="res://asset/beambody.png" id="2_q5jqs"]
 [ext_resource type="Texture2D" uid="uid://gpgvbmluboov" path="res://asset/abilityworld.png" id="3_qjlbb"]
+[ext_resource type="AudioStream" uid="uid://f0lce3sg4py0" path="res://asset/sfx/enemybeam.wav" id="4_qvplx"]
 
 [sub_resource type="Animation" id="Animation_cwahi"]
 length = 0.001
@@ -127,6 +128,11 @@ collision_mask = 5
 y_sort_enabled = true
 position = Vector2(0.5, -1)
 shape = SubResource("RectangleShape2D_bnc4h")
+
+[node name="Beam" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_qvplx")
+volume_db = -13.867
+bus = &"SFX"
 
 [connection signal="area_entered" from="Collision" to="." method="_on_collision_area_entered"]
 [connection signal="body_entered" from="Collision" to="." method="_on_collision_body_entered"]

@@ -29,7 +29,7 @@ func _on_area_entered(area):
 	queue_free()
 
 func _on_body_entered(_body):
-	if Global.distance_to_player(position) > 12:
+	if Global.distance_to_player(position) > 16:
 		explode()
 		queue_free()
 

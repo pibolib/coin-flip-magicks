@@ -38,7 +38,7 @@ func _on_body_entered(_body):
 				a.take_damage(2)
 			else:
 				a.take_damage(1)
-	if Global.distance_to_player(position) > 12:
+	if Global.distance_to_player(position) > 16:
 		explode()
 		queue_free()
 

@@ -4,18 +4,27 @@ extends TextureRect
 var ability: int = 0
 
 func _ready():
+	if Global.game_variables.spells.size() <= index:
+		queue_free()
+		return
 	ability = Global.game_variables.spells[index]
 	texture.region.position = Vector2(16*ability, 0)
 	Global.connect("_on_ui_update", ui_update)
 	$KBIndicator.text = "%d" % (index+1)
 
 func _process(_delta):
+	if Global.game_variables.spells.size() <= index:
+		queue_free()
+		return
 	if Global.game_variables.spell_cooldown[index] > 10:
 		$Cooldown.text = "%d" % Global.game_variables.spell_cooldown[index]
 	elif Global.game_variables.spell_cooldown[index] > 0:
 		$Cooldown.text = "%0.1f" % Global.game_variables.spell_cooldown[index]
 
 func ui_update():
+	if Global.game_variables.spells.size() <= index:
+		queue_free()
+		return
 	$Selected.visible = Global.game_variables.selected_spell == index
 	$KBIndicator.visible = !$Selected.visible and !$Cooldown.visible
 	if Global.game_variables.spell_cooldown[index] > 0 or Global.game_variables.coin < Global.SPELL_COSTS[ability]:

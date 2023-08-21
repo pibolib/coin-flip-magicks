@@ -22,6 +22,9 @@ func _process(delta):
 			zsp = 0
 			g = 0
 		else:
+			if zsp > 10:
+				$Bounce.pitch_scale = randf_range(0.95,1.05)
+				$Bounce.play()
 			velocity /= 2
 			zsp = -zsp*0.5
 			sparkle()

@@ -2,6 +2,8 @@ extends CharacterBody2D
 class_name Player
 
 const COIN_FLIP_ANIM = preload("res://scene/MainGame/Player/CoinFlipAnim.tscn")
+const MOTE_EXPLOSION = preload("res://scene/MainGame/Player/PlayerAttacks/MoteExplosion.tscn")
+const COIN = preload("res://scene/MainGame/Coin/Coin.tscn")
 
 var z: float = -8
 var flip_sprite := false
@@ -15,7 +17,27 @@ func _ready():
 	$Sprite.play("default")
 
 func _process(_delta):
+	if Global.game_variables.hp <= 0 and !invulnerable and visible:
+		var explosion = MOTE_EXPLOSION.instantiate()
+		explosion.position = position
+		add_sibling(explosion)
+		visible = false
+		$CollisionShape2D.disabled = true
+		$PickupRadius/CollisionShape2D.disabled = true
+		$Generic.play()
+		var coin = COIN.instantiate()
+		coin.position = position
+		add_sibling(coin)
+	if Global.game_variables.hp <= 0:
+		shake = 2
+		modulate.a = 0.5
 	#block dedicated to updating visuals
+	if Global.game_variables.in_boss:
+		$Camera2D.global_position.x = 3440
+		$Camera2D.position_smoothing_enabled = true
+	else:
+		$Camera2D.position = Vector2.ZERO
+		$Camera2D.position_smoothing_enabled = false
 	$Sprite.position.y = z
 	$Sprite.flip_h = flip_sprite
 	aim_angle = position.angle_to_point(get_global_mouse_position())
@@ -39,7 +61,7 @@ func _process(_delta):
 		Global.set_selected(5)
 	elif Input.is_action_just_pressed("select_6"):
 		Global.set_selected(6)
-	if Input.is_action_just_pressed("fire"):
+	if Input.is_action_just_pressed("fire") and Global.game_variables.hp > 0:
 		fire()
 	if Input.is_action_pressed("move_left"):
 		movement_vector.x = -1
@@ -51,7 +73,7 @@ func _process(_delta):
 		movement_vector.y = -1
 	elif Input.is_action_pressed("move_down"):
 		movement_vector.y = 1
-	if movement_vector != Vector2.ZERO:
+	if movement_vector != Vector2.ZERO and Global.game_variables.hp > 0:
 		velocity = movement_speed * movement_vector.normalized()
 	else:
 		velocity = Vector2.ZERO
@@ -74,6 +96,19 @@ func fire():
 	if Global.get_current_spell_cooldown() <= 0 and Global.game_variables.coin >= Global.SPELL_COSTS[spell]:
 		Global.set_current_spell_cooldown(Global.SPELL_COOLDOWNS[spell])
 		Global.game_variables.coin -= Global.SPELL_COSTS[spell]
+		match spell:
+			0:
+				$Generic.play()
+			1:
+				$Fireball.play()
+			2:
+				$IceSpikes.play()
+			3:
+				$LightningBeam.play()
+			4:
+				$Generic.play()
+			5:
+				$Mote2.play()
 		if spell != 0 and spell != 4:
 			if buff == 1:
 				make_coin_flip("Heads")
@@ -92,6 +127,7 @@ func fire():
 func _on_pickup_radius_area_entered(area):
 	Global.game_variables.coin += 1
 	Global.game_variables.coins_obtained += 1
+	$Coin.play()
 	area.sparkle(3)
 	area.queue_free()
 
@@ -102,6 +138,7 @@ func make_coin_flip(side: String) -> void:
 
 func take_damage() -> void:
 	if !invulnerable:
+		$Damage.play()
 		Global.camera_shake += 4
 		shake = 2
 		invulnerable = true

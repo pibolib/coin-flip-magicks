@@ -56,6 +56,8 @@ func take_damage(amount: int) -> void:
 			var coin := Global.instantiate_coin()
 			coin.position = position
 			call_deferred("add_sibling", coin)
+	else:
+		$Hurt.play()
 	var popup := Global.instantiate_text("%d" % amount)
 	add_child(popup)
 	modulate = Color.RED

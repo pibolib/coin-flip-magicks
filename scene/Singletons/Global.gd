@@ -13,7 +13,9 @@ const GAME_DEFAULT: Dictionary = {
 	shop_unlocked = false,
 	coins_obtained = 0,
 	coins_threshold = 60,
-	tutorial_enemies_killed = 0
+	tutorial_enemies_killed = 0,
+	in_boss = false,
+	win = false,
 }
 
 var time: float = 0
@@ -26,10 +28,12 @@ var game_variables: Dictionary = {
 	hp = 3,
 	coin = 0,
 	player_position = Vector2(0,0),
-	shop_unlocked = false,
+	shop_unlocked = true,
 	coins_obtained = 0,
 	coins_threshold = 60,
-	tutorial_enemies_killed = 0
+	tutorial_enemies_killed = 0,
+	in_boss = false,
+	win = false,
 }
 
 const SPELL_DESCRIPTIONS: Array[String] = [
@@ -53,7 +57,12 @@ const SPELL_PRELOADS: Array[PackedScene] = [
 const COIN := preload("res://scene/MainGame/Coin/Coin.tscn")
 const TEXT := preload("res://scene/MainGame/UI/TextPopup.tscn")
 
-var current_message = "Welcome to [???]! Use WASD to move around."
+var current_message = "Use WASD to move around."
+
+var bgm1 = preload("res://asset/bgm/bgm1.ogg")
+var bgm2 = preload("res://asset/bgm/bgm2.ogg")
+
+var current_bgm: AudioStreamOggVorbis = preload("res://asset/bgm/bgm1.ogg")
 
 const SPELL_COOLDOWNS: Array[float] = [
 	2, 3, 5, 10, 30, 10
@@ -69,10 +78,17 @@ const SPELL_BUY_COSTS: Array[int] = [
 
 func _ready():
 	emit_signal("_on_ui_update")
+	play_bgm(current_bgm)
 
 func _process(delta):
 	if Input.is_action_just_pressed("pause"):
-		get_tree().paused = !get_tree().paused
+		if game_variables.hp <= 0 or game_variables.win:
+			play_bgm(bgm1)
+			get_tree().reload_current_scene()
+			game_variables = GAME_DEFAULT.duplicate(true)
+			current_message = "Use WASD to move around."
+		else:
+			get_tree().paused = !get_tree().paused
 	emit_signal("_on_ui_update")
 	time += delta
 	if !get_tree().paused:
@@ -89,6 +105,10 @@ func _process(delta):
 	elif game_variables.tutorial_enemies_killed == 5:
 		game_variables.tutorial_enemies_killed += 1
 		current_message = "Nice work! When you use spells, it costs a certain number of coins to do so. Make sure you have enough coins to use a spell."
+	if game_variables.win:
+		current_message = "You win! Thanks for playing! Press ESC to return to title"
+	if game_variables.hp <= 0:
+		current_message = "Game over! Press ESC to return to title"
 
 func _physics_process(delta):
 	if camera_shake >= 0.5:
@@ -144,3 +164,19 @@ func buy_spell(spell: int) -> void:
 		game_variables.spells.append(spell)
 		game_variables.coin -= SPELL_BUY_COSTS[spell]
 		game_variables.spell_cooldown.append(0)
+		$Buy.play()
+	else:
+		$CannotBuy.play()
+
+func play_bgm(bgm: AudioStreamOggVorbis) -> void:
+	if $BGM.playing:
+		var tween := get_tree().create_tween()
+		tween.tween_property($BGM, "volume_db", -80, 2)
+		await tween.finished
+		$BGM.stream = bgm
+		$BGM.volume_db = 0
+		$BGM.play()
+	else:
+		$BGM.stream = bgm
+		$BGM.volume_db = 0
+		$BGM.play()

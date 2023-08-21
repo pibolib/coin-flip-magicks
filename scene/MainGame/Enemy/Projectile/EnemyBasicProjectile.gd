@@ -7,9 +7,9 @@ var velocity := Vector2.ZERO
 var speed: float = 120
 var angle: float = 0
 var buff: bool = false
-var source: Node = null
 
 func _ready():
+	$Bullet.play()
 	$Sprite.rotation = angle
 	velocity = Vector2.from_angle(angle) * speed
 

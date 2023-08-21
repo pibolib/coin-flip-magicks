@@ -1,7 +1,20 @@
-[gd_scene load_steps=2 format=3 uid="uid://bmk5hm0qdkxvc"]
+[gd_scene load_steps=4 format=3 uid="uid://bmk5hm0qdkxvc"]
 
 [ext_resource type="Script" path="res://scene/Singletons/Global.gd" id="1_75lyd"]
+[ext_resource type="AudioStream" uid="uid://8y0170pnqcu2" path="res://asset/sfx/coinspend.wav" id="2_tkysf"]
+[ext_resource type="AudioStream" uid="uid://bndywpwh5uwe0" path="res://asset/sfx/deny.wav" id="3_ot8xm"]
 
 [node name="Global" type="Node"]
 process_mode = 3
 script = ExtResource("1_75lyd")
+
+[node name="BGM" type="AudioStreamPlayer" parent="."]
+bus = &"BGM"
+
+[node name="Buy" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_tkysf")
+bus = &"SFX"
+
+[node name="CannotBuy" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_ot8xm")
+bus = &"SFX"

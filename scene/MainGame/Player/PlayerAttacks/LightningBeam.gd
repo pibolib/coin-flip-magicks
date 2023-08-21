@@ -26,7 +26,7 @@ func _physics_process(_delta):
 	$Marker2D.position = Vector2(0,-10) + Vector2(randf_range(-0.5,0.5),randf_range(-0.5,0.5))
 
 func _on_collision_body_entered(_body):
-	if Global.distance_to_player($Ball.global_position) > 24:
+	if Global.distance_to_player($Ball.global_position) > 28:
 		Global.camera_shake += 3
 		active = false
 
